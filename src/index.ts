@@ -1,11 +1,8 @@
 import { Hono } from 'hono';
 import { InteractionResponseType, InteractionType, verifyKey } from 'discord-interactions';
 
-type Bindings = {
-	DISCORD_PUBLIC_KEY: string;
-};
 
-const app = new Hono<{ Bindings: Bindings }>();
+const app = new Hono<{ Bindings: Env }>();
 
 app.post('/interactions', async (c) => {
 	if (c.req.method !== 'POST') {
