@@ -1,6 +1,6 @@
 import { Hono } from 'hono';
 import { InteractionResponseType, InteractionType, verifyKey } from 'discord-interactions';
-
+import { showcaseHandler, showcaseModalHandler, showcaseModalSubmitHandler } from './commands/showcase';
 
 const app = new Hono<{ Bindings: Env }>();
 
@@ -31,14 +31,30 @@ app.post('/interactions', async (c) => {
 		const command = interaction.data.name;
 		const args = interaction.data.options || [];
 
-		console.log(args);
+		if (command === 'showcase') {
+			return c.json(showcaseHandler(args));
+		}
 
 		return c.json({
 			type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
 			data: {
-				content: command + ' ' + args.map((arg: any) => arg.value).join(' '),
+				// content: command + ' ' + args.map((arg: any) => arg.value).join(' '),
+				content: '```json\n' + JSON.stringify(interaction.data, null, 2) + '```',
 			},
 		});
+	}
+
+	if (interaction.type === InteractionType.MESSAGE_COMPONENT) {
+		if (interaction.data.custom_id === 'showcase_modal') {
+			console.log(showcaseModalHandler());
+			return c.json(showcaseModalHandler());
+		}
+	}
+
+	if (interaction.type === InteractionType.MODAL_SUBMIT) {
+		if (interaction.data.custom_id === 'showcase_modal') {
+			return c.json(await showcaseModalSubmitHandler(c.env.DISCORD_BOT_TOKEN, interaction.data));
+		}
 	}
 
 	return c.text('Bad Request', { status: 400 });
