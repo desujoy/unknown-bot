@@ -4,11 +4,12 @@ import { showcaseModalHandler, showcaseModalSubmitHandler } from './commands/sho
 import { verifySignature } from './middleware/verifySignature';
 import { commandList } from './commands';
 import { createMessage } from './helpers/response';
+import { InteractionRequestType } from './helpers/request';
 
 const app = new Hono<{ Bindings: Env }>();
 
 app.post('/interactions', verifySignature, async (c) => {
-	const interaction = await c.req.json();
+	const interaction = (await c.req.json()) as InteractionRequestType;
 
 	if (interaction.type === InteractionType.PING) {
 		return c.json({ type: 1 });
@@ -22,7 +23,7 @@ app.post('/interactions', verifySignature, async (c) => {
 			return c.json(commandList.find((cmd) => cmd.name === command)?.execute(args));
 		}
 
-		return c.json(createMessage({ content: 'Command not found' }));
+		return c.json(createMessage({ content: '```json\n' + JSON.stringify(interaction.data, null, 2) + '```' }));
 	}
 
 	if (interaction.type === InteractionType.MESSAGE_COMPONENT) {
