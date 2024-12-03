@@ -1,26 +1,13 @@
 import { Hono } from 'hono';
-import { InteractionResponseType, InteractionType, verifyKey } from 'discord-interactions';
-import { showcaseHandler, showcaseModalHandler, showcaseModalSubmitHandler } from './commands/showcase';
+import { InteractionType } from 'discord-interactions';
+import { showcaseModalHandler, showcaseModalSubmitHandler } from './commands/showcase';
+import { verifySignature } from './middleware/verifySignature';
+import { commandList } from './commands';
+import { createMessage } from './helpers/response';
 
 const app = new Hono<{ Bindings: Env }>();
 
-app.post('/interactions', async (c) => {
-	if (c.req.method !== 'POST') {
-		return c.text('Method Not Allowed', { status: 405 });
-	}
-
-	const signature = c.req.header('X-Signature-Ed25519');
-	const timestamp = c.req.header('X-Signature-Timestamp');
-
-	if (!signature || !timestamp) {
-		return c.text('Unauthorized', { status: 401 });
-	}
-	const isValid = await verifyKey(await c.req.arrayBuffer(), signature, timestamp, c.env.DISCORD_PUBLIC_KEY);
-
-	if (!isValid) {
-		return c.text('Unauthorized', { status: 401 });
-	}
-
+app.post('/interactions', verifySignature, async (c) => {
 	const interaction = await c.req.json();
 
 	if (interaction.type === InteractionType.PING) {
@@ -31,17 +18,11 @@ app.post('/interactions', async (c) => {
 		const command = interaction.data.name;
 		const args = interaction.data.options || [];
 
-		if (command === 'showcase') {
-			return c.json(showcaseHandler(args));
+		if (commandList.find((cmd) => cmd.name === command)) {
+			return c.json(commandList.find((cmd) => cmd.name === command)?.execute(args));
 		}
 
-		return c.json({
-			type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-			data: {
-				// content: command + ' ' + args.map((arg: any) => arg.value).join(' '),
-				content: '```json\n' + JSON.stringify(interaction.data, null, 2) + '```',
-			},
-		});
+		return c.json(createMessage({ content: 'Command not found' }));
 	}
 
 	if (interaction.type === InteractionType.MESSAGE_COMPONENT) {
