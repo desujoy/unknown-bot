@@ -18,6 +18,6 @@
   },
   "dependencies": {
     "discord-interactions": "^4.3.0",
-    "hono": "^4.6.10"
+    "hono": "^4.10.2"
   }
 }
