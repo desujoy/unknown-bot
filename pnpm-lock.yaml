@@ -9,11 +9,11 @@ importers:
   .:
     dependencies:
       discord-interactions:
-        specifier: ^4.1.0
-        version: 4.1.0
+        specifier: ^4.3.0
+        version: 4.4.0
       hono:
-        specifier: ^4.6.10
-        version: 4.6.10
+        specifier: ^4.11.4
+        version: 4.11.4
     devDependencies:
       '@cloudflare/vitest-pool-workers':
         specifier: ^0.5.2
@@ -591,8 +591,8 @@ packages:
   devalue@4.3.3:
     resolution: {integrity: sha512-UH8EL6H2ifcY8TbD2QsxwCC/pr5xSwPvv85LrLXVihmHVC3T3YqTCIwnR5ak0yO1KYqlxrPVOA/JVZJYPy2ATg==}
 
-  discord-interactions@4.1.0:
-    resolution: {integrity: sha512-7DyXvsnp9FxjMPD+cPHG3DbttveVgOcWOBtWqyjSQ2bsfkTVpJF2l4c8+XujXaC45NXpRV67Da3go5O2DI0/hw==}
+  discord-interactions@4.4.0:
+    resolution: {integrity: sha512-jjJx8iwAeJcj8oEauV43fue9lNqkf38fy60aSs2+G8D1nJmDxUIrk08o3h0F3wgwuBWWJUZO+X/VgfXsxpCiJA==}
     engines: {node: '>=18.4.0'}
 
   esbuild@0.17.19:
@@ -645,8 +645,8 @@ packages:
     resolution: {integrity: sha512-0hJU9SCPvmMzIBdZFqNPXWa6dqh7WdH0cII9y+CyS8rG3nL48Bclra9HmKhVVUHyPWNH5Y7xDwAB7bfgSjkUMQ==}
     engines: {node: '>= 0.4'}
 
-  hono@4.6.10:
-    resolution: {integrity: sha512-IXXNfRAZEahFnWBhUUlqKEGF9upeE6hZoRZszvNkyAz/CYp+iVbxm3viMvStlagRJohjlBRGOQ7f4jfcV0XMGg==}
+  hono@4.11.4:
+    resolution: {integrity: sha512-U7tt8JsyrxSRKspfhtLET79pU8K+tInj5QZXs1jSugO1Vq5dFj3kmZsRldo29mTBfcjDRVRXrEZ6LS63Cog9ZA==}
     engines: {node: '>=16.9.0'}
 
   human-signals@5.0.0:
@@ -1367,7 +1367,7 @@ snapshots:
 
   devalue@4.3.3: {}
 
-  discord-interactions@4.1.0: {}
+  discord-interactions@4.4.0: {}
 
   esbuild@0.17.19:
     optionalDependencies:
@@ -1460,7 +1460,7 @@ snapshots:
     dependencies:
       function-bind: 1.1.2
 
-  hono@4.6.10: {}
+  hono@4.11.4: {}
 
   human-signals@5.0.0: {}
 
